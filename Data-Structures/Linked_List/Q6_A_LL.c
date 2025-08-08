@@ -88,7 +88,39 @@ int main()
 
 int moveMaxToFront(ListNode **ptrHead)
 {
-    /* add your code here */
+	ListNode *cur;
+	int idx;
+	int max_val = -2147483648;
+    int max_idx = -1;
+	cur = (*ptrHead);
+	idx = 0;
+	while (cur != NULL)
+	{
+		if (cur->item > max_val)
+		{
+			max_val = cur->item;
+			max_idx = idx;
+		}
+		cur = cur->next;
+		idx++;
+	}
+
+	if (max_idx == 0) return 0;
+
+	ListNode *pre;
+	cur = (*ptrHead);
+	idx = max_idx;
+	while (idx > 0)
+	{
+		pre = cur;
+		cur = cur->next;
+		idx--;
+	}
+	pre->next = cur->next;
+	cur->next = (*ptrHead);
+	(*ptrHead) = cur;
+
+	return 0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -110,7 +142,7 @@ void printList(LinkedList *ll){
 	printf("\n");
 }
 
-ListNode * findNode(LinkedList *ll, int index){
+ListNode *findNode(LinkedList *ll, int index){
 
 	ListNode *temp;
 

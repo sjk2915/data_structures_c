@@ -90,7 +90,17 @@ int main()
 
 int insertSortedLL(LinkedList *ll, int item)
 {
-	/* add your code here */
+	ListNode *cur;
+	cur = ll->head;
+	int idx = 0;
+	while (cur != NULL && cur->item < item)
+	{
+		cur = cur->next;
+		idx++;
+	}
+
+	insertNode(ll, idx, item);
+	return 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -166,7 +176,6 @@ int insertNode(LinkedList *ll, int index, int value){
 		ll->size++;
 		return 0;
 	}
-
 
 	// Find the nodes before and at the target position
 	// Create a new node and reconnect the links
