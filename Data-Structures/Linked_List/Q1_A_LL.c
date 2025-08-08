@@ -90,32 +90,17 @@ int main()
 
 int insertSortedLL(LinkedList *ll, int item)
 {
-	ListNode *pre, *cur;
-	pre = NULL;
+	ListNode *cur;
 	cur = ll->head;
 	int idx = 0;
 	while (cur != NULL && cur->item < item)
 	{
-		pre = cur;
 		cur = cur->next;
 		idx++;
 	}
 	if (cur != NULL && cur->item == item) return -1;
 
-	// pre 가 NULL 이면 cur 이 head 인 경우 (ll 이 빈리스트)
-	if (pre == NULL)
-	{
-		ll->head = malloc(sizeof(ListNode));
-		ll->head->item = item;
-		ll->head->next = NULL;
-	}
-	else
-	{
-		pre->next = malloc(sizeof(ListNode));
-		pre->next->item = item;
-		pre->next->next = cur;
-	}
-
+	insertNode(ll, idx, item);
 	return idx;
 }
 

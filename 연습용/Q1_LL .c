@@ -120,12 +120,12 @@ int insertSortedLL(LinkedList *ll, int item)
 	}
 	if (cur != NULL && cur->item == item) return -1;
 
-	// pre 가 NULL 이면 cur 이 head 인 경우 (ll 이 빈리스트)
+	// pre 가 NULL 이면 cur 이 head 인 경우
 	if (pre == NULL)
 	{
 		ll->head = malloc(sizeof(ListNode));
 		ll->head->item = item;
-		ll->head->next = NULL;
+		ll->head->next = cur;
 	}
 	else
 	{
@@ -133,6 +133,7 @@ int insertSortedLL(LinkedList *ll, int item)
 		pre->next->item = item;
 		pre->next->next = cur;
 	}
+
 	return idx;
 }
 

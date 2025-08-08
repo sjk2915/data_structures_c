@@ -90,8 +90,8 @@ void RecursiveReverse(ListNode **ptrHead)
 	if (*ptrHead == NULL || (*ptrHead)->next == NULL)
         return;
 
-	ListNode *tmp = (*ptrHead);
-	(*ptrHead) = (*ptrHead)->next;
+	ListNode *tmp = *ptrHead;
+	*ptrHead = (*ptrHead)->next;
 	RecursiveReverse(ptrHead);
     tmp->next->next = tmp;
     tmp->next = NULL;

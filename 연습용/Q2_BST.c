@@ -1,17 +1,15 @@
-
 //////////////////////////////////////////////////////////////////////////////////
 
 /* CE1007/CZ1007 Data Structures
 Lab Test: Section F - Binary Search Trees Questions
-Purpose: Implementing the required functions for Question 1 */
+Purpose: Implementing the required functions for Question 2 */
 
 //////////////////////////////////////////////////////////////////////////////////
 
 #include <stdio.h>
 #include <stdlib.h>
 
-#define BUFFER_SIZE 1024
-///////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
 
 typedef struct _bstnode{
 	int item;
@@ -19,28 +17,27 @@ typedef struct _bstnode{
 	struct _bstnode *right;
 } BSTNode;   // You should not change the definition of BSTNode
 
-typedef struct _QueueNode {
+typedef struct _stackNode{
 	BSTNode *data;
-	struct _QueueNode *nextPtr;
-}QueueNode; // You should not change the definition of QueueNode
+	struct _stackNode *next;
+}StackNode; // You should not change the definition of StackNode
 
-
-typedef struct _queue
+typedef struct _stack
 {
-	QueueNode *head;
-	QueueNode *tail;
-}Queue; // You should not change the definition of queue
+	StackNode *top;
+}Stack; // You should not change the definition of Stack
 
-///////////////////////////////////////////////////////////////////////////////////
+///////////////////////// function prototypes ////////////////////////////////////
 
 // You should not change the prototypes of these functions
-void levelOrderTraversal(BSTNode *node);
+void inOrderTraversal(BSTNode *node);
 
 void insertBSTNode(BSTNode **node, int value);
 
-BSTNode* dequeue(QueueNode **head, QueueNode **tail);
-void enqueue(QueueNode **head, QueueNode **tail, BSTNode *node);
-int isEmpty(QueueNode *head);
+void push(Stack *stack, BSTNode *node);
+BSTNode *pop(Stack *s);
+BSTNode *peek(Stack *s);
+int isEmpty(Stack *s);
 void removeAll(BSTNode **node);
 
 ///////////////////////////// main() /////////////////////////////////////////////
@@ -55,7 +52,7 @@ int main()
 	root = NULL;
 
 	printf("1: Insert an integer into the binary search tree;\n");
-	printf("2: Print the level-order traversal of the binary search tree;\n");
+	printf("2: Print the in-order traversal of the binary search tree;\n");
 	printf("0: Quit;\n");
 
 
@@ -72,8 +69,8 @@ int main()
 			insertBSTNode(&root, i);
 			break;
 		case 2:
-			printf("The resulting level-order traversal of the binary search tree is: ");
-			levelOrderTraversal(root); // You need to code this function
+			printf("The resulting in-order traversal of the binary search tree is: ");
+			inOrderTraversal(root); // You need to code this function
 			printf("\n");
 			break;
 		case 0:
@@ -91,23 +88,12 @@ int main()
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void levelOrderTraversal(BSTNode* root)
+void inOrderTraversal(BSTNode *root)
 {
-	Queue q;
-	q.head = NULL;
-	q.tail = NULL;
-	
-	BSTNode* cur;
-	enqueue(&q.head, &q.tail, root);
-	while (!isEmpty(q.head))
-	{
-		cur = dequeue(&q.head, &q.tail);
-		printf("%d ", cur->item);
-		if (cur->left != NULL) 
-			enqueue(&q.head, &q.tail, cur->left);
-		if (cur->right != NULL) 
-			enqueue(&q.head, &q.tail, cur->right);
-	}
+	if (root == NULL) return;
+	inOrderTraversal(root->left);
+	print(root->item);
+	inOrderTraversal(root->right);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -140,51 +126,66 @@ void insertBSTNode(BSTNode **node, int value){
 
 //////////////////////////////////////////////////////////////////////////////////
 
-// enqueue node
-void enqueue(QueueNode **headPtr, QueueNode **tailPtr, BSTNode *node)
+void push(Stack *stack, BSTNode * node)
 {
-	// dynamically allocate memory
-	QueueNode *newPtr = malloc(sizeof(QueueNode));
+	StackNode *temp;
 
-	// if newPtr does not equal NULL
-	if (newPtr != NULL) {
-		newPtr->data = node;
-		newPtr->nextPtr = NULL;
+	temp = malloc(sizeof(StackNode));
 
-		// if queue is empty, insert at head
-		if (isEmpty(*headPtr)) {
-			*headPtr = newPtr;
-		}
-		else { // insert at tail
-			(*tailPtr)->nextPtr = newPtr;
-		}
+	if (temp == NULL)
+		return;
+	temp->data = node;
 
-		*tailPtr = newPtr;
+	if (stack->top == NULL)
+	{
+		stack->top = temp;
+		temp->next = NULL;
 	}
-	else {
-		printf("Node not inserted");
+	else
+	{
+		temp->next = stack->top;
+		stack->top = temp;
 	}
 }
 
-BSTNode* dequeue(QueueNode **headPtr, QueueNode **tailPtr)
+BSTNode * pop(Stack * s)
 {
-	BSTNode *node = (*headPtr)->data;
-	QueueNode *tempPtr = *headPtr;
-	*headPtr = (*headPtr)->nextPtr;
+	StackNode *temp, *t;
+	BSTNode * ptr;
+	ptr = NULL;
 
-	if (*headPtr == NULL) {
-		*tailPtr = NULL;
+	t = s->top;
+	if (t != NULL)
+	{
+		temp = t->next;
+		ptr = t->data;
+
+		s->top = temp;
+		free(t);
+		t = NULL;
 	}
 
-	free(tempPtr);
-
-	return node;
+	return ptr;
 }
 
-int isEmpty(QueueNode *head)
+BSTNode * peek(Stack * s)
 {
-	return head == NULL;
+	StackNode *temp;
+	temp = s->top;
+	if (temp != NULL)
+		return temp->data;
+	else
+		return NULL;
 }
+
+int isEmpty(Stack *s)
+{
+	if (s->top == NULL)
+		return 1;
+	else
+		return 0;
+}
+
 
 void removeAll(BSTNode **node)
 {
