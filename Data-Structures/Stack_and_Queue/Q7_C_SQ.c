@@ -139,7 +139,7 @@ int balanced(char *expression)
 			break;
 
 		default:
-			break;
+			return -1;
 		}
 	}
 	int is_balanced = isEmptyStack(&s);

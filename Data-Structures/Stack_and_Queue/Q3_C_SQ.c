@@ -116,7 +116,7 @@ int isStackPairwiseConsecutive(Stack *s)
 		push(&tmp_s, item1);
 		push(&tmp_s, item2);
 
-		if (abs(item2-item1) > 1)
+		if (abs(item2-item1) != 1)
 		{
 			is_pairwise = 0;
 			break;
