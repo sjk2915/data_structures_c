@@ -45,10 +45,10 @@ void removeAll(BTNode **node);
 int hasGreatGrandchild(BTNode *node)
 {
     if (node == NULL) return 0;
-    BTNode *left_left_left, *left_left_right,
-           *left_right_left, *left_right_right,
-           *right_left_left, *right_left_right,
-           *right_right_left, *right_right_right;
+    BTNode *left_left_left = NULL, *left_left_right = NULL,
+           *left_right_left = NULL, *left_right_right = NULL,
+           *right_left_left = NULL, *right_left_right = NULL,
+           *right_right_left = NULL, *right_right_right = NULL;
 
     BTNode *left = node->left;
     if (left != NULL)

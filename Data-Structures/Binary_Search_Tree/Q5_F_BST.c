@@ -54,12 +54,13 @@ int main()
 
 	printf("1: Insert an integer into the binary search tree;\n");
 	printf("2: Print the post-order traversal of the binary search tree;\n");
+	printf("3: Remove the value of the binary search tree;\n");
 	printf("0: Quit;\n");
 
 
 	while (c != 0)
 	{
-		printf("Please input your choice(1/2/0): ");
+		printf("Please input your choice(1/2/3/0): ");
 		scanf("%d", &c);
 
 		switch (c)
@@ -73,6 +74,11 @@ int main()
 			printf("The resulting post-order traversal of the binary search tree is: ");
 			postOrderIterativeS2(root); // You need to code this function
 			printf("\n");
+			break;
+		case 3:
+			printf("Input an integer that you want to remove in the Binary Search Tree: ");
+			scanf("%d", &i);
+			root = removeNodeFromTree(root, i);
 			break;
 		case 0:
 			removeAll(&root);
@@ -115,8 +121,44 @@ void postOrderIterativeS2(BSTNode *root)
    deletes the key and returns the new root. Make recursive function. */
 BSTNode* removeNodeFromTree(BSTNode *root, int value)
 {
-	/* add your code here */
+    if (root == NULL) return root;
+
+    // 삭제할 노드를 탐색하는 경우
+    if (value < root->item) 
+		root->left = removeNodeFromTree(root->left, value);
+    else if (value > root->item)
+		root->right = removeNodeFromTree(root->right, value);
+
+    // 삭제할 노드를 찾은 경우
+    else {
+        // 케이스 1: 자식이 없거나 오른쪽만 있는 경우
+        if (root->left == NULL)
+		{
+            BSTNode* temp = root->right;
+            free(root);
+            return temp;
+        }
+		// 케이스 2: 자식이 왼쪽만 있는 경우
+		else if (root->right == NULL) 
+		{
+            BSTNode* temp = root->left;
+            free(root);
+            return temp;
+        }
+        
+        // 케이스 3: 자식이 두 개인 경우
+        // 오른쪽 서브트리에서 가장 작은 값을 찾아 대체
+        BSTNode* temp = root->right;
+        while (temp->left != NULL)
+            temp = temp->left;
+        
+        root->item = temp->item;
+        root->right = removeNodeFromTree(root->right, temp->item);
+    }
+
+    return root;
 }
+
 ///////////////////////////////////////////////////////////////////////////////
 
 void insertBSTNode(BSTNode **node, int value){
