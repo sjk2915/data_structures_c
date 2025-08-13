@@ -145,15 +145,17 @@ BSTNode* removeNodeFromTree(BSTNode *root, int value)
             free(root);
             return temp;
         }
-        
         // 케이스 3: 자식이 두 개인 경우
         // 오른쪽 서브트리에서 가장 작은 값을 찾아 대체
-        BSTNode* temp = root->right;
-        while (temp->left != NULL)
-            temp = temp->left;
-        
-        root->item = temp->item;
-        root->right = removeNodeFromTree(root->right, temp->item);
+		else
+		{
+			BSTNode* temp = root->right;
+			while (temp->left != NULL)
+				temp = temp->left;
+			
+			root->item = temp->item;
+			root->right = removeNodeFromTree(root->right, temp->item);
+		}
     }
 
     return root;

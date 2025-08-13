@@ -91,19 +91,24 @@ int main()
 void inOrderTraversal(BSTNode *root)
 {
 	if (root == NULL) return;
+	// 스택 선언 및 초기화
 	Stack s;
 	s.top = NULL;
 
 	BSTNode *cur = root;
+	// 탐사할 노드가 남아있거나 스택이 비어있지 않은동안 반복
 	while (cur != NULL || !isEmpty(&s))
 	{
+		// 더이상 왼쪽 자식이 없을때까지 탐사
 		while (cur != NULL)
 		{
 			push(&s, cur);
 			cur = cur->left;
 		}
+		// 중위 순회는 즉시 출력
 		cur = pop(&s);
 		printf("%d ", cur->item);
+		// 중위 순회는 출력 후 오른쪽 서브트리를 탐사
 		cur = cur->right;
 	}
 }

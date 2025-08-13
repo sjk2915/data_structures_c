@@ -91,24 +91,32 @@ int main()
 
 void postOrderIterativeS1(BSTNode *root)
 {
+	if (root == NULL) return;
+	// 스택 선언 및 초기화
 	Stack s;
 	s.top = NULL;
 
     BSTNode *cur = root;
+	// 마지막 방문한 노드를 기억
     BSTNode *last = NULL;
+	// 탐사할 노드가 남아있거나 스택이 비어있지 않은동안 반복
     while (cur != NULL || !isEmpty(&s)) 
 	{
+		// 더이상 왼쪽 자식이 없을때까지 탐사
         while (cur != NULL)
 		{
             push(&s, cur);
             cur = cur->left;
         }
+		// 후위 순회는 오른쪽 서브트리를 확인 후 출력
 		BSTNode *on_stack = peek(&s);
 		if (on_stack->right == NULL || on_stack->right == last)
 		{
 			last = pop(&s);
 			printf("%d ", last->item);
-		} else
+		}
+		// 후위 순회는 오른쪽 서브트리를 먼저 탐사
+		else
 		{
 			cur = on_stack->right;
 		}

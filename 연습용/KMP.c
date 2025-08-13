@@ -4,6 +4,8 @@
 
 #define MAX_LEN 1000000
 
+// Longest Prefix which is also a Suffix
+// LPS배열이라고도 부름
 int* CreatePiTable(char *pattern)
 {
     int pattern_len = strlen(pattern);

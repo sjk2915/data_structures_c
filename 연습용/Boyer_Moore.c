@@ -94,7 +94,7 @@ void Boyer_Moore(char *str, char *pattern)
         }
     }
 
-    printf("%d\n", matched_cnt);
+    printf("%d\n", matched_idxs);
     for (int i=0; i<matched_cnt; i++)
         printf("%d ", matched_idxs[i]+1);
     printf("\n");
